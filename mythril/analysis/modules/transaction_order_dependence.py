@@ -108,13 +108,14 @@ def _analyze_state(state: GlobalState) -> list:
     return issues
 
 
-def _get_states_with_opcode(state, opcode):
+def _get_states_with_opcode(statespace, opcode):
     """ Gets all (state, node) tuples in statespace with opcode"""
     #for k in statespace.nodes:
     #    node = statespace.nodes[k]
     #       for state in node.states:
-    if state.get_current_instruction()["opcode"] == opcode:
-        yield state
+    for state in statespace.world_state.node.states:
+        if state.get_current_instruction()["opcode"] == opcode:
+            yield state
 
 
 def _dependent_on_storage(expression):

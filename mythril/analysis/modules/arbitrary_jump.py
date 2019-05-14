@@ -20,7 +20,7 @@ class ArbitraryJumpModule(DetectionModule):
             swc_id=ARBITRARY_JUMP,
             description="Checks for usage assembly instructions.",
             entrypoint="callback",
-            pre_hooks=["MSTORE"],
+            pre_hooks=["MSTORE", "CREATE"],
         )
 
     def execute(self, state: GlobalState) -> list:
@@ -39,7 +39,7 @@ def _analyze_state(state) -> list:
     :param state:
     :return:
     """
-    log.info("Arbitrary jump module: found MSTORE instruction")
+    log.info("Arbitrary jump module: found MSTORE or CREATE instruction")
 
     try:
         instruction = state.get_current_instruction()

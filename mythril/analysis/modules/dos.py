@@ -35,7 +35,7 @@ class DOS(DetectionModule):
         super().__init__(
             name="DOS",
             swc_id=DOS_WITH_BLOCK_GAS_LIMIT,
-            description="Check for DOS",
+            description="Check for DOS with gas limit",
             entrypoint="callback",
             pre_hooks=["JUMPI", "CALL", "SSTORE"],
         )

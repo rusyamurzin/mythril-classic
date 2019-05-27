@@ -64,15 +64,34 @@ def _analyze_state(state: GlobalState) -> list:
                 swc_id=WRITE_TO_ARBITRARY_STORAGE,
                 bytecode=state.environment.code.bytecode,
                 title="Write to arbitrary storage location",
-                severity="Medium",
+                severity="Low",
                 description_head="A possible write to arbitrary storage location vulnerability exists in function {}.".format(
                     state.node.function_name),
                 description_tail="Index to write in storage location is {}.".format(index),
                 gas_used=(state.mstate.min_gas_used, state.mstate.max_gas_used),
             )
             issues.append(issue)
+        else:
+            active_storage = state.environment.active_account.storage.__getitem__(index)
+            storage_list = state.environment.active_account.storage
+            if active_storage not in storage_list:
+                issue = Issue(
+                    contract=state.node.contract_name,
+                    function_name=state.node.function_name,
+                    address=instruction["address"],
+                    swc_id=WRITE_TO_ARBITRARY_STORAGE,
+                    bytecode=state.environment.code.bytecode,
+                    title="Write to arbitrary storage location",
+                    severity="Low",
+                    description_head="A possible write to arbitrary storage location vulnerability exists in function {}.".format(
+                        state.node.function_name),
+                    description_tail="Index to write in storage location is {}.".format(index),
+                    gas_used=(state.mstate.min_gas_used, state.mstate.max_gas_used),
+                )
+                issues.append(issue)
     except UnsatError:
         return []
+
     return issues
 
 
